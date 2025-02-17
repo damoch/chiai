@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ChatComponent } from './chat/chat/chat.component';
 
 interface WeatherForecast {
   date: string;
