@@ -1,1 +1,20 @@
-<p>chat works!</p>
+<mat-toolbar color="primary">
+  </mat-toolbar>
+  
+  <div class="chat-container"> <!--
+    <mat-card class="chat-box">
+      <mat-list>
+        <mat-list-item *ngFor="let message of chatHistory">
+          <strong *ngIf="message.user">{{ message.user }}:</strong> {{ message.text }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card> -->
+  
+    <div class="input-container">
+      <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+  
