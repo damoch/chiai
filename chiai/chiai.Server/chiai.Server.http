@@ -1,0 +1,6 @@
+@chiai.Server_HostAddress = http://localhost:5009
+
+GET {{chiai.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
