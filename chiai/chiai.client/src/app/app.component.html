@@ -1,3 +1,11 @@
 ﻿<h1 id="tableLabel">ChiAI</h1>
 
-<app-chat></app-chat>
+<div class="app-container">
+    <aside class="sidebar">
+      <app-history [history]="chatHistory"></app-history>
+    </aside>
+    <main class="chat-container">
+      <app-chat ></app-chat>
+    </main>
+  </div>
+  

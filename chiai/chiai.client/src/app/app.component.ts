@@ -16,12 +16,12 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  chatHistory: { timestamp: string; messages: { user: string; text: string }[] }[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-  }
+  }  
 
 
 

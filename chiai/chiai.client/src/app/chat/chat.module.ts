@@ -8,12 +8,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { HistoryComponent } from './history/history.component';
 
 
 
 @NgModule({
   declarations: [
-    ChatComponent
+    ChatComponent,
+    HistoryComponent
   ],
   imports: [
     CommonModule, FormsModule,    MatInputModule,
@@ -22,6 +24,6 @@ import { MatButtonModule } from '@angular/material/button';
         MatToolbarModule,
         MatListModule
   ],
-  exports: [ChatComponent]
+  exports: [ChatComponent, HistoryComponent]
 })
 export class ChatModule { }

@@ -1,14 +1,21 @@
-﻿:host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
-}
-
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-table {
-    margin: 0 auto;
-}
+﻿.app-container {
+    display: flex;
+    height: 100vh;
+    background-color: #282c34;
+  }
+  
+  .sidebar {
+    width: 300px;
+    background-color: #343541;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+  }
+  
+  .chat-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
