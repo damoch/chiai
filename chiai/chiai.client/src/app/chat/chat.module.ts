@@ -9,13 +9,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { HistoryComponent } from './history/history.component';
+import { MessageComponent } from './message/message.component';
 
 
 
 @NgModule({
   declarations: [
     ChatComponent,
-    HistoryComponent
+    HistoryComponent,
+    MessageComponent
   ],
   imports: [
     CommonModule, FormsModule,    MatInputModule,

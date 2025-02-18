@@ -1,14 +1,13 @@
 <mat-toolbar color="primary">
   </mat-toolbar>
   
-  <div class="chat-container"> <!--
+  <div class="chat-container"> 
+    
     <mat-card class="chat-box">
-      <mat-list>
-        <mat-list-item *ngFor="let message of chatHistory">
-          <strong *ngIf="message.user">{{ message.user }}:</strong> {{ message.text }}
-        </mat-list-item>
-      </mat-list>
-    </mat-card> -->
+      <div class="chat-messages">
+        <app-message *ngFor="let message of chatMessages" [user]="message.user" [text]="message.text"></app-message>
+      </div>
+    </mat-card>
   
     <div class="input-container">
       <mat-form-field class="full-width">

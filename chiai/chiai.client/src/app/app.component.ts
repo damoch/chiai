@@ -1,13 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ChatComponent } from './chat/chat/chat.component';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+
 
 @Component({
   selector: 'app-root',
@@ -18,12 +11,10 @@ interface WeatherForecast {
 export class AppComponent implements OnInit {
   chatHistory: { timestamp: string; messages: { user: string; text: string }[] }[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   ngOnInit() {
   }  
 
-
-
-  title = 'chiai.client';
+  title = 'ChiAI';
 }

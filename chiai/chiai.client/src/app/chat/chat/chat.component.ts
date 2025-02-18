@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService, Message } from '../chat.service';
+import { ChatService, Message } from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -14,29 +14,25 @@ export class ChatComponent implements OnInit {
 
   constructor(private chatService: ChatService) {}
 
+  chatMessages: { user: string; text: string }[] = [];
   ngOnInit(): void {
-    this.chatService.startChat().subscribe(session => {
-      this.sessionId = session.id;
+    this.chatService.connect().subscribe((message) => {
+      if (message.user === 'ChiAI') {
+        const lastMessage = this.chatMessages[this.chatMessages.length - 1];
+        if (lastMessage && lastMessage.user === 'ChiAI') {
+          lastMessage.text = message.text;
+        } else {
+          this.chatMessages.push(message);
+        }
+      } else {
+        this.chatMessages.push(message);
+      }
     });
   }
 
   sendMessage() {
-    if (!this.userMessage.trim() || !this.sessionId) return;
-
-    const newMessage: Message = {
-      id: 0,
-      content: this.userMessage,
-      isUserMessage: true,
-      timestamp: new Date().toISOString()
-    };
-
-    this.messages.push(newMessage);
-
-    this.chatService.sendMessage(this.sessionId, this.userMessage)
-      .subscribe(response => {
-        this.messages.push(response);
-      });
-
-    this.userMessage = '';
+    if (!this.userMessage.trim()) return;
+    this.chatService.sendMessage(this.userMessage);
+    this.userMessage = "";
   }
 }

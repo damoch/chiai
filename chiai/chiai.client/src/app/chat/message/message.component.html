@@ -1,0 +1,4 @@
+<mat-card class="message-container" [ngClass]="{ 'user-message': user === 'You', 'ai-message': user === 'AI' }">
+    <strong *ngIf="user">{{ user }}:</strong> {{ text }}
+  </mat-card>
+  
