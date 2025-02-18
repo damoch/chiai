@@ -1,23 +1,34 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { interval, Observable, Subject, take } from 'rxjs';
 import { ChatMessage } from '../shared/chatMessage';
+import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  private currentUser = "PromptEngineer"
+  private apiUrl = '/chat';
+  private currentUser:User;
   private chatSubject = new Subject<ChatMessage>();
 
-  constructor() {}
+  constructor(
+    private http:HttpClient
+   ) {    
+    this.currentUser = {userId: "0", userName: "PromptNG"}
+  }
 
   connect(chatId:string): Observable<ChatMessage> {
+    this.chatSubject = new Subject<ChatMessage>();
     return this.chatSubject.asObservable();
+  }
+  
+  startNewChat(): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}?userId=${this.currentUser.userId}`);
   }
 
   sendMessage(message: string ) {
-    var msg:ChatMessage = {id:"", content:message, author:this.currentUser, date: new Date(), isFromAi: false};//
+    var msg:ChatMessage = {id:"", content:message, author:this.currentUser.userName, date: new Date(), isFromAi: false};
     this.chatSubject.next(msg);
 
     const aiResponse = 'Lorem ipsum dolor sit amet...';

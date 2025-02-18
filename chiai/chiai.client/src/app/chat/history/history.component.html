@@ -1,5 +1,5 @@
 <mat-card class="history-container">
-    <mat-card-title>Chat History</mat-card-title><button mat-button>New chat...</button>
+    <mat-card-title>Chat History</mat-card-title><button (click)="newChatStarted.emit()" mat-button>New chat...</button>
     
     <mat-list>
       <mat-list-item *ngFor="let item of history;" (click)="selectChat(item.chatId)">

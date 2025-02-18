@@ -20,18 +20,28 @@ export class ChatComponent implements OnInit {
 
   currentChatId:string = "";
   ngOnInit(): void {
-    this.chatService.connect(this.currentChatId).subscribe((message) => {
-      if (message.author === 'ChiAI') {
-        const lastMessage = this.chatMessages[this.chatMessages.length - 1];
-        if (lastMessage && lastMessage.author === 'ChiAI') {
-          lastMessage.content = message.content;
+    this.startNewChat();
+  }
+
+  startNewChat() {
+    this.chatService.startNewChat().subscribe((response: string) => {
+      debugger;
+      this.currentChatId = response;
+      this.chatService.connect(this.currentChatId).subscribe((message) => {
+        if (message.author === 'ChiAI') {
+          const lastMessage = this.chatMessages[this.chatMessages.length - 1];
+          if (lastMessage && lastMessage.author === 'ChiAI') {
+            lastMessage.content = message.content;
+          } else {
+            this.chatMessages.push(message);
+          }
         } else {
           this.chatMessages.push(message);
         }
-      } else {
-        this.chatMessages.push(message);
-      }
+      });
+      this.chatMessages = [];
     });
+
   }
 
   sendMessage() {

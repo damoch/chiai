@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HistoryItem } from '../shared/historyItem';
 import { ChatMessage } from '../shared/chatMessage';
+import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
 
-  constructor() { }
+  constructor() {
+    this.currentUser = {userId: "0", userName: "PromptNG"}
+   }
 
+  currentUser:User;
   getHistory():HistoryItem[]{
     return [
       {chatId: "0000", chatName:"Hello fellow gamers" },

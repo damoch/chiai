@@ -11,6 +11,7 @@ import { HistoryItem } from "../../shared/historyItem"
 export class HistoryComponent {
   history: HistoryItem[] = [];
   @Output() chatSelected = new EventEmitter<string>();
+  @Output() newChatStarted = new EventEmitter();
 
   constructor(private historyService: HistoryService){
 
