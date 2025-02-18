@@ -2,10 +2,10 @@
 
 <div class="app-container">
     <aside class="sidebar">
-      <app-history [history]="chatHistory"></app-history>
+      <app-history (chatSelected)="chatComponent.loadChat($event)"></app-history>
     </aside>
     <main class="chat-container">
-      <app-chat ></app-chat>
+      <app-chat #chatComponent></app-chat>
     </main>
   </div>
   

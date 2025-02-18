@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService, Message } from '../../services/chat.service';
+import { ChatService } from '../../services/chat.service';
+import { ChatMessage } from '../../shared/chatMessage';
+import { HistoryService } from '../../services/history.service';
 
 @Component({
   selector: 'app-chat',
@@ -8,19 +10,21 @@ import { ChatService, Message } from '../../services/chat.service';
   styleUrl: './chat.component.css',
 })
 export class ChatComponent implements OnInit {
-  sessionId: number | null = null;
-  messages: Message[] = [];
   userMessage: string = '';
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService,
+    private historyService: HistoryService
+  ) {}
 
-  chatMessages: { user: string; text: string }[] = [];
+  chatMessages:ChatMessage[]  = [];
+
+  currentChatId:string = "";
   ngOnInit(): void {
-    this.chatService.connect().subscribe((message) => {
-      if (message.user === 'ChiAI') {
+    this.chatService.connect(this.currentChatId).subscribe((message) => {
+      if (message.author === 'ChiAI') {
         const lastMessage = this.chatMessages[this.chatMessages.length - 1];
-        if (lastMessage && lastMessage.user === 'ChiAI') {
-          lastMessage.text = message.text;
+        if (lastMessage && lastMessage.author === 'ChiAI') {
+          lastMessage.content = message.content;
         } else {
           this.chatMessages.push(message);
         }
@@ -34,5 +38,10 @@ export class ChatComponent implements OnInit {
     if (!this.userMessage.trim()) return;
     this.chatService.sendMessage(this.userMessage);
     this.userMessage = "";
+  }
+
+  loadChat(chatId:string){
+    this.chatMessages = this.historyService.getChatHistory(chatId);
+    this.currentChatId = chatId;
   }
 }

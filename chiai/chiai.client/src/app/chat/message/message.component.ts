@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ChatMessage } from '../../shared/chatMessage';
 
 @Component({
   selector: 'app-message',
@@ -7,13 +8,12 @@ import { Component, Input } from '@angular/core';
   standalone: false
 })
 export class MessageComponent {
-  @Input() user!: string;
-  @Input() text!: string;
+  @Input() message!: ChatMessage;
 
   aiLiked: boolean | null = null;
 
   giveFeedback(like: boolean) {
     this.aiLiked = like;
-    console.log(`User ${like ? 'liked' : 'disliked'} the AI response: "${this.text}"`);
+    console.log(`User ${like ? 'liked' : 'disliked'} the AI response: "${this.message.content}"`);
   }
 }

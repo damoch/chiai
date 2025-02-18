@@ -9,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  chatHistory: { timestamp: string; messages: { user: string; text: string }[] }[] = [];
 
   constructor() {}
 

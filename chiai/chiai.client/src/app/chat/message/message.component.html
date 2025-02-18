@@ -1,7 +1,7 @@
-<mat-card class="message-container" [ngClass]="{ 'user-message': user === 'You', 'ai-message': user === 'AI' }">
-    <strong *ngIf="user">{{ user }}:</strong> {{ text }}
+<mat-card class="message-container">
+    <strong *ngIf="message.isFromAi">{{ message.author }}:</strong> {{ message.content }}
 
-    <div class="feedback-buttons" *ngIf="user === 'ChiAI'">
+    <div class="feedback-buttons" *ngIf="message.isFromAi">
         <button mat-icon-button (click)="giveFeedback(true)" [color]="aiLiked === true ? 'primary' : ''">
             👍
         </button>

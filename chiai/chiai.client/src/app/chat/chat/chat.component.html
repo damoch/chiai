@@ -2,7 +2,7 @@
 
   <mat-card class="chat-box">
     <div class="chat-messages">
-      <app-message *ngFor="let message of chatMessages" [user]="message.user" [text]="message.text"></app-message>
+      <app-message *ngFor="let msg of chatMessages" [message]="msg"></app-message>
     </div>
   </mat-card>
 
