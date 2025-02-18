@@ -1,19 +1,15 @@
-<mat-toolbar color="primary">
-  </mat-toolbar>
-  
-  <div class="chat-container"> 
-    
-    <mat-card class="chat-box">
-      <div class="chat-messages">
-        <app-message *ngFor="let message of chatMessages" [user]="message.user" [text]="message.text"></app-message>
-      </div>
-    </mat-card>
-  
-    <div class="input-container">
-      <mat-form-field class="full-width">
-        <input matInput [(ngModel)]="userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()">
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
+<div class="chat-container">
+
+  <mat-card class="chat-box">
+    <div class="chat-messages">
+      <app-message *ngFor="let message of chatMessages" [user]="message.user" [text]="message.text"></app-message>
     </div>
+  </mat-card>
+
+  <div class="input-container">
+    <mat-form-field class="full-width">
+      <input matInput [(ngModel)]="userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage()">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendMessage()">Send</button>
   </div>
-  
+</div>
