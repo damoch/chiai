@@ -1,4 +1,4 @@
-export interface HistoryItem {
-    chatName: string,
-    chatId: string;
+export interface Chat {
+    title: string,
+    id: number;
 }

@@ -28,7 +28,7 @@ namespace chiai.Server.Sevices.Implementations
             {
                 UserId = userId,
             };
-            chat.Title = $"Chat no. {chat.Id}";
+            chat.Title = $"Chat no. {_dbContext.Chats.Max(x => x.Id)+1}";
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {

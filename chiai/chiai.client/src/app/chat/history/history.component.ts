@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { HistoryService } from '../../services/history.service';
-import { HistoryItem } from "../../shared/historyItem"
+import { Chat } from "../../shared/historyItem"
 
 @Component({
   selector: 'app-history',
@@ -9,18 +9,23 @@ import { HistoryItem } from "../../shared/historyItem"
   standalone: false
 })
 export class HistoryComponent {
-  history: HistoryItem[] = [];
-  @Output() chatSelected = new EventEmitter<string>();
+  history: Chat[] = [];
+  @Output() chatSelected = new EventEmitter<number>();
   @Output() newChatStarted = new EventEmitter();
 
   constructor(private historyService: HistoryService){
 
   }
   ngOnInit(): void {
-    this.history = this.historyService.getHistory();
+    this.loadHistory();
+  }
+  loadHistory() {
+    this.historyService.getHistory().subscribe((result: Chat[]) => {
+      this.history = result;
+    });
   }
 
-  selectChat(chatId: string) {
+  selectChat(chatId: number) {
     this.chatSelected.emit(chatId);
   }
 }

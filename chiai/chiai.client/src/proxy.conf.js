@@ -5,11 +5,11 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 
 const PROXY_CONFIG = [
   {
-    context: ["/chat"], // 👈 This tells Angular to proxy only requests matching "/chat"
+    context: ["/chat", "/history"],
     target: target,
     secure: false,
     changeOrigin: true,
-    logLevel: "debug", // 👈 Logs detailed proxy behavior in the console
+    logLevel: "debug", 
   }
 ]
 

@@ -18,7 +18,7 @@ export class ChatService {
     this.currentUser = {userId: 1, userName: "PromptNG"}
   }
 
-  connect(chatId:string): Observable<ChatMessage> {
+  connect(chatId:number): Observable<ChatMessage> {
     this.chatSubject = new Subject<ChatMessage>();
     return this.chatSubject.asObservable();
   }

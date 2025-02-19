@@ -1,12 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using chiai.Server.Sevices.Abstracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace chiai.Server.Controllers
 {
+    [Route("history")]
     public class HistoryController : Controller
     {
-        public IActionResult Index()
+        private readonly IHistoryService _historyService;
+
+        public HistoryController(IHistoryService historyService)
         {
-            return View();
+            _historyService = historyService;
+        }
+
+        [HttpGet]
+        public IActionResult GetHistory([FromQuery] int userId)
+        {
+            try
+            {
+                var history = _historyService.GetHistory(userId);
+                return Ok(history);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

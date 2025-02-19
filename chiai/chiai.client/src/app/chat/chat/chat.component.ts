@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { ChatMessage } from '../../shared/chatMessage';
 import { HistoryService } from '../../services/history.service';
@@ -10,6 +10,7 @@ import { HistoryService } from '../../services/history.service';
   styleUrl: './chat.component.css',
 })
 export class ChatComponent implements OnInit {
+  @Output() newChatLoaded = new EventEmitter<void>;
   userMessage: string = '';
 
   constructor(private chatService: ChatService,
@@ -18,7 +19,7 @@ export class ChatComponent implements OnInit {
 
   chatMessages:ChatMessage[]  = [];
 
-  currentChatId:string = "";
+  currentChatId:number = -1;
   ngOnInit(): void {
     this.startNewChat();
   }
@@ -39,6 +40,7 @@ export class ChatComponent implements OnInit {
         }
       });
       this.chatMessages = [];
+      this.newChatLoaded.emit();
     });
 
   }
@@ -49,7 +51,7 @@ export class ChatComponent implements OnInit {
     this.userMessage = "";
   }
 
-  loadChat(chatId:string){
+  loadChat(chatId:number){
     this.chatMessages = this.historyService.getChatHistory(chatId);
     this.currentChatId = chatId;
   }
