@@ -12,7 +12,7 @@ namespace chiai.Server.Controllers
         [HttpGet(Name = "new/{userId}")]
         public IActionResult StartNewChat(string userId)
         {
-            return Ok("TestID");
+            return Ok(new { chatId = "TestID" });
         }
     }
 }

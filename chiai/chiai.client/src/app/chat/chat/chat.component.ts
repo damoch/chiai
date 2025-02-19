@@ -24,9 +24,8 @@ export class ChatComponent implements OnInit {
   }
 
   startNewChat() {
-    this.chatService.startNewChat().subscribe((response: string) => {
-      debugger;
-      this.currentChatId = response;
+    this.chatService.startNewChat().subscribe((result: any) => {
+      this.currentChatId = result.chatId;
       this.chatService.connect(this.currentChatId).subscribe((message) => {
         if (message.author === 'ChiAI') {
           const lastMessage = this.chatMessages[this.chatMessages.length - 1];
