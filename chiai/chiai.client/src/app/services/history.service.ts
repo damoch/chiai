@@ -9,7 +9,7 @@ import { User } from '../shared/user';
 export class HistoryService {
 
   constructor() {
-    this.currentUser = {userId: "0", userName: "PromptNG"}
+    this.currentUser = {userId: 1, userName: "PromptNG"}
    }
 
   currentUser:User;

@@ -1,5 +1,7 @@
 
 using chiai.Server.Data;
+using chiai.Server.Sevices.Abstracts;
+using chiai.Server.Sevices.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace chiai.Server
@@ -11,8 +13,10 @@ namespace chiai.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IChatService, ChatService>();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

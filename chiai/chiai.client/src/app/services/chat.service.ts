@@ -15,7 +15,7 @@ export class ChatService {
   constructor(
     private http:HttpClient
    ) {    
-    this.currentUser = {userId: "0", userName: "PromptNG"}
+    this.currentUser = {userId: 1, userName: "PromptNG"}
   }
 
   connect(chatId:string): Observable<ChatMessage> {

@@ -1,18 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using chiai.Server.Sevices.Abstracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace chiai.Server.Controllers
 {
     [Route("chat")]
     public class ChatController : Controller
     {
-        public ChatController()
+        private readonly IChatService _chatService;
+
+        public ChatController(IChatService chatService)
         {
-            
+            _chatService = chatService;
         }
+
         [HttpGet(Name = "new/{userId}")]
-        public IActionResult StartNewChat(string userId)
+        public async Task<IActionResult> StartNewChat(int userId)
         {
-            return Ok(new { chatId = "TestID" });
+            try
+            {
+                var chatDto = await _chatService.StartNewChat(userId);
+                return Ok(chatDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

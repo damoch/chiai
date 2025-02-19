@@ -10,6 +10,13 @@ namespace chiai.Server.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1, 
+                    Username = "PromptEngineer"
+                }
+            );
             modelBuilder.Entity<Chat>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Chats)
