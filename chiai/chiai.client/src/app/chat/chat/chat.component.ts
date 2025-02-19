@@ -52,7 +52,9 @@ export class ChatComponent implements OnInit {
   }
 
   loadChat(chatId:number){
-    this.chatMessages = this.historyService.getChatHistory(chatId);
     this.currentChatId = chatId;
+    this.historyService.getChatHistory(chatId).subscribe((result:ChatMessage[]) => {
+      this.chatMessages = result;
+    });
   }
 }

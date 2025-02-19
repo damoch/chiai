@@ -14,8 +14,8 @@ export class HistoryComponent {
   @Output() newChatStarted = new EventEmitter();
 
   constructor(private historyService: HistoryService){
-
   }
+  
   ngOnInit(): void {
     this.loadHistory();
   }

@@ -25,5 +25,17 @@ namespace chiai.Server.Sevices.Implementations
             var chats = _dbContext.Chats.Where(c => c.UserId == userId).ToList();
             return chats.Select(ChatDto.FromChat).ToList();
         }
+
+        public List<ChatMessageDto> GetChatMessages(int chatId)
+        {
+            var chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chatId);
+            if (chat == null)
+            {
+                _logger.LogError($"Chat with id {chatId} not found");
+                throw new ArgumentException("Chat not found");
+            }
+            var messages = _dbContext.ChatMessages.Where(m => m.ChatId == chatId).ToList();
+            return messages.Select(ChatMessageDto.FromChatMessage).ToList();
+        }
     }
 }

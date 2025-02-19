@@ -13,13 +13,27 @@ namespace chiai.Server.Controllers
             _historyService = historyService;
         }
 
-        [HttpGet]
-        public IActionResult GetHistory([FromQuery] int userId)
+        [HttpGet("{userId}")]
+        public IActionResult GetHistory(int userId)
         {
             try
             {
                 var history = _historyService.GetHistory(userId);
                 return Ok(history);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("chats/{chatId}/messages")]
+        public async Task<IActionResult> GetChatMessages( int chatId)
+        {
+            try
+            {
+                var chatDto = _historyService.GetChatMessages(chatId);
+                return Ok(chatDto);
             }
             catch (Exception ex)
             {

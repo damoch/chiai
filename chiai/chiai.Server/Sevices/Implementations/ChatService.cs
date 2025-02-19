@@ -14,6 +14,7 @@ namespace chiai.Server.Sevices.Implementations
             _dbContext = context;
             _logger = logger;
         }
+
         public async Task<ChatDto> StartNewChat(int userId)
         {
             var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);

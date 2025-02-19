@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { interval, Observable, Subject, take } from 'rxjs';
 import { ChatMessage } from '../shared/chatMessage';
@@ -23,8 +23,8 @@ export class ChatService {
     return this.chatSubject.asObservable();
   }
   
-  startNewChat(): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}?userId=${this.currentUser.userId}`);
+  startNewChat(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/new/${this.currentUser.userId}`);
   }
 
   sendMessage(message: string ) {

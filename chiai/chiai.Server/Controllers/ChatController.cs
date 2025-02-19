@@ -13,7 +13,7 @@ namespace chiai.Server.Controllers
             _chatService = chatService;
         }
 
-        [HttpGet(Name = "new/{userId}")]
+        [HttpGet("new/{userId}")]
         public async Task<IActionResult> StartNewChat(int userId)
         {
             try
@@ -26,5 +26,6 @@ namespace chiai.Server.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
     }
 }
