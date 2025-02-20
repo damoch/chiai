@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit {
 
   startNewChat() {
     this.chatService.startNewChat().subscribe((result: any) => {
-      this.currentChatId = result.chatId;
+      this.currentChatId = result.id;
       this.chatService.connect(this.currentChatId).subscribe((message) => {
         if (message.author === 'ChiAI') {
           const lastMessage = this.chatMessages[this.chatMessages.length - 1];
@@ -47,7 +47,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (!this.userMessage.trim()) return;
-    this.chatService.sendMessage(this.userMessage);
+    this.chatService.sendMessage(this.userMessage, this.currentChatId);
     this.userMessage = "";
   }
 

@@ -1,6 +1,7 @@
 ﻿using chiai.Server.Data;
 using chiai.Server.Data.Dto;
 using chiai.Server.Sevices.Abstracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace chiai.Server.Sevices.Implementations
 {
@@ -15,9 +16,43 @@ namespace chiai.Server.Sevices.Implementations
             _logger = logger;
         }
 
+        public async Task SaveMessageAsync(int chatId, ChatMessageDto message)
+        {
+            var chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chatId);
+            if (chat == null)
+            {
+                _logger.LogError($"Chat with id {chatId} not found");
+                throw new ArgumentException("Chat not found");
+            }
+            var chatMessage = new ChatMessage
+            {
+                ChatId = chatId,
+                Content = message.Content,
+                Author = message.Author,
+                Timestamp = DateTime.Now
+            };
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.ChatMessages.Add(chatMessage);
+                    await _dbContext.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to save message");
+                    transaction.Rollback();
+                    throw new ArgumentException("Failed to save message");
+                }
+            }
+        }
+
         public async Task<ChatDto> StartNewChat(int userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            var user = await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
@@ -25,29 +60,31 @@ namespace chiai.Server.Sevices.Implementations
                 throw new ArgumentException("User not found");
             }
 
+            // Determine the next chat number efficiently
+            int nextChatNumber = (await _dbContext.Chats.MaxAsync(x => (int?)x.Id) ?? 0) + 1;
+
             var chat = new Chat
             {
                 UserId = userId,
+                Title = $"Chat no. {nextChatNumber}"
             };
-            chat.Title = $"Chat no. {_dbContext.Chats.Max(x => x.Id)+1}";
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            try
             {
-                try
-                {
-                    _dbContext.Chats.Add(chat);
-                    await _dbContext.SaveChangesAsync();
-                    transaction.Commit();
-                    return ChatDto.FromChat(chat);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to start new chat");
-                    transaction.Rollback();
-                    throw new ArgumentException("Failed to start new chat");
-                }
+                _dbContext.Chats.Add(chat);
+                await _dbContext.SaveChangesAsync(); // Chat ID is now assigned
+                await transaction.CommitAsync();
 
+                return ChatDto.FromChat(chat);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to start new chat");
+                await transaction.RollbackAsync();
+                throw new InvalidOperationException("Failed to start new chat", ex);
             }
         }
+
     }
 }

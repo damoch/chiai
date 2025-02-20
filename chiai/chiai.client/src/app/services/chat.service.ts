@@ -26,23 +26,60 @@ export class ChatService {
   startNewChat(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/new/${this.currentUser.userId}`);
   }
-
-  sendMessage(message: string ) {
-    var msg:ChatMessage = {id:"", content:message, author:this.currentUser.userName, date: new Date(), isFromAi: false};
-    this.chatSubject.next(msg);
-
-    const aiResponse = 'Lorem ipsum dolor sit amet...';
-    this.sendChunkedResponse(aiResponse);
+  sendMessage(message: string, chatId: number) {
+    const msg: ChatMessage = {
+      id: 0,
+      content: message,
+      author: this.currentUser.userName,
+      date: new Date(),
+      isFromAi: false
+    };
+    this.chatSubject.next(msg); 
+  
+    this.receiveChunkedResponse(chatId, msg);
   }
 
-  private sendChunkedResponse(fullText: string) {
+  private parseIncompleteJson(incompleteString:string):string {
+    if(!incompleteString.endsWith(']')){
+      incompleteString+= ']';
+    }
+
+    let parsedArray = JSON.parse(incompleteString);
+    return parsedArray.join('');
+
+  }
+  
+  private async receiveChunkedResponse(chatId: number, message: ChatMessage) {
+    const response = await fetch(`${this.apiUrl}/send/${chatId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message)
+    });
+  
+    if (!response.body) {
+      console.error("No response body from API");
+      return;
+    }
+  
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
     let currentText = '';
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done){
 
-    interval(50)
-      .pipe(take(fullText.length)) 
-      .subscribe((index) => {
-        currentText += fullText[index];
-        this.chatSubject.next({ author: 'ChiAI', content: currentText, id:"", date: new Date(), isFromAi:true });
+        break; 
+      }
+      currentText += decoder.decode(value, { stream: true });
+  
+      this.chatSubject.next({
+        id: 0,
+        content: this.parseIncompleteJson(currentText),
+        author: "ChiAI",
+        date: new Date(),
+        isFromAi: true
       });
+    }
   }
+  
 }

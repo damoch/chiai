@@ -28,7 +28,7 @@ namespace chiai.Server.Controllers
         }
 
         [HttpGet("chats/{chatId}/messages")]
-        public async Task<IActionResult> GetChatMessages( int chatId)
+        public IActionResult GetChatMessages( int chatId)
         {
             try
             {
