@@ -20,6 +20,10 @@ export class ChatService {
     this.currentUser = {userId: 1, userName: "PromptNG"}
   }
 
+  private messageGeneratedSource = new Subject<void>()
+  messageGenerated$ = this.messageGeneratedSource.asObservable();
+
+
   rateMessageAsHelpful(chatId: number, messageId:number, rating:number){
     return this.http.post(`${this.apiUrl}/rate/${chatId}/${messageId}/${rating}`, {});
   }
@@ -59,6 +63,7 @@ export class ChatService {
 
   stopMessageGeneration(){
     this.abortController.abort();
+    this.messageGeneratedSource.next();
   }
   
   private async receiveChunkedResponse(chatId: number, message: ChatMessage) {
@@ -91,7 +96,8 @@ export class ChatService {
           rating: 0,
           isBeingGenerated: false
         });
-        break; 
+        this.messageGeneratedSource.next();
+        break;
       }
       currentText += decoder.decode(value, { stream: true });
   

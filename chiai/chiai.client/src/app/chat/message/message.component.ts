@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { ChatMessage } from '../../shared/chatMessage';
 import { ChatService } from '../../services/chat.service';
 
@@ -11,7 +11,8 @@ import { ChatService } from '../../services/chat.service';
 export class MessageComponent {
 
   constructor(
-    private chatService: ChatService
+    private chatService: ChatService,
+    private cdr: ChangeDetectorRef
   ) {
     this.chatId = -1;
   }
@@ -24,11 +25,13 @@ export class MessageComponent {
     let ratingValue = like ? 1 : 2
     this.chatService.rateMessageAsHelpful(this.chatId, this.message.id, ratingValue).subscribe(() => {
       this.message.rating = ratingValue;//a bit naive... but its 2 AM...
+      this.cdr.detectChanges();
     })
 
   }
 
   stopGeneration(){
     this.chatService.stopMessageGeneration();
+    this.cdr.detectChanges();
   }
 }

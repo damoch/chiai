@@ -2,10 +2,10 @@
     <strong *ngIf="message.isFromAi">{{ message.author }}:</strong> {{ message.content }}
 
     <div class="feedback-buttons" *ngIf="message.isFromAi">
-        <button *ngIf="message.rating !== 2"  mat-icon-button (click)="giveFeedback(true)">
+        <button *ngIf="!message.isBeingGenerated && message.rating !== 2"  mat-icon-button (click)="giveFeedback(true)">
             👍
         </button>
-        <button *ngIf="message.rating !== 1" mat-icon-button (click)="giveFeedback(false)">
+        <button *ngIf="!message.isBeingGenerated && message.rating !== 1" mat-icon-button (click)="giveFeedback(false)">
             👎
         </button>
         <button *ngIf="message.isBeingGenerated" mat-icon-button (click)="stopGeneration()">
