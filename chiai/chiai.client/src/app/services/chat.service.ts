@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval, Observable, Subject, take } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ChatMessage } from '../shared/chatMessage';
 import { User } from '../shared/user';
 
@@ -18,6 +18,10 @@ export class ChatService {
     this.currentUser = {userId: 1, userName: "PromptNG"}
   }
 
+  rateMessageAsHelpful(chatId: number, messageId:number, rating:number){
+    return this.http.post(`${this.apiUrl}/rate/${chatId}/${messageId}/${rating}`, {});
+  }
+
   connect(chatId:number): Observable<ChatMessage> {
     this.chatSubject = new Subject<ChatMessage>();
     return this.chatSubject.asObservable();
@@ -32,7 +36,8 @@ export class ChatService {
       content: message,
       author: this.currentUser.userName,
       date: new Date(),
-      isFromAi: false
+      isFromAi: false,
+      rating: 0
     };
     this.chatSubject.next(msg); 
   
@@ -77,7 +82,8 @@ export class ChatService {
         content: this.parseIncompleteJson(currentText),
         author: "ChiAI",
         date: new Date(),
-        isFromAi: true
+        isFromAi: true,
+        rating: 0
       });
     }
   }

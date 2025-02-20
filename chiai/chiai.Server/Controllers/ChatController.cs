@@ -46,5 +46,19 @@ namespace chiai.Server.Controllers
             }
         }
 
+        [HttpPost("rate/{chatId}/{messageId}/{rating}")]
+        public async Task<IActionResult> RateMessage(int chatId, int messageId, int rating)
+        {
+            try
+            {
+                await _chatService.RateMessageAsync(chatId, messageId, rating);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }

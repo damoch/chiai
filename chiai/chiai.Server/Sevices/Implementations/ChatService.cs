@@ -1,5 +1,6 @@
 ﻿using chiai.Server.Data;
 using chiai.Server.Data.Dto;
+using chiai.Server.Data.Enums;
 using chiai.Server.Sevices.Abstracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,42 @@ namespace chiai.Server.Sevices.Implementations
             _logger = logger;
         }
 
+        public async Task RateMessageAsync(int chatId, int messageId, int rating)
+        {
+            var chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chatId);
+            if (chat == null)
+            {
+                _logger.LogError($"Chat with id {chatId} not found");
+                throw new ArgumentException("Chat not found");
+            }
+            var message = _dbContext.ChatMessages.FirstOrDefault(m => m.Id == messageId);
+            if (message == null)
+            {
+                _logger.LogError($"Message with id {messageId} not found");
+                throw new ArgumentException("Message not found");
+            }
+            if (!message.IsFromAi)
+            {
+                _logger.LogError($"Cannot rate non-AI message");
+                throw new ArgumentException("Cannot rate non-AI message");
+            }
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    message.Rating = (RatingType)rating;
+                    await _dbContext.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to rate message");
+                    transaction.Rollback();
+                    throw new ArgumentException("Failed to rate message");
+                }
+            }
+        }
+
         public async Task SaveMessageAsync(int chatId, ChatMessageDto message)
         {
             var chat = _dbContext.Chats.FirstOrDefault(c => c.Id == chatId);
@@ -30,7 +67,8 @@ namespace chiai.Server.Sevices.Implementations
                 Content = message.Content,
                 Author = message.Author,
                 Timestamp = DateTime.Now,
-                IsFromAi = message.IsFromAi
+                IsFromAi = message.IsFromAi,
+                Rating = RatingType.None
             };
             using (var transaction = _dbContext.Database.BeginTransaction())
             {

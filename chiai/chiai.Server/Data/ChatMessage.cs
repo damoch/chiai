@@ -1,4 +1,6 @@
-﻿namespace chiai.Server.Data
+﻿using chiai.Server.Data.Enums;
+
+namespace chiai.Server.Data
 {
     public class ChatMessage
     {
@@ -9,5 +11,6 @@
         public bool IsFromAi { get; set; }
         public int ChatId { get; set; }
         public Chat Chat { get; set; } = null!;
+        public RatingType Rating { get; set; }
     }
 }

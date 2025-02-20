@@ -2,10 +2,10 @@
     <strong *ngIf="message.isFromAi">{{ message.author }}:</strong> {{ message.content }}
 
     <div class="feedback-buttons" *ngIf="message.isFromAi">
-        <button mat-icon-button (click)="giveFeedback(true)" [color]="aiLiked === true ? 'primary' : ''">
+        <button *ngIf="message.rating !== 2"  mat-icon-button (click)="giveFeedback(true)">
             👍
         </button>
-        <button mat-icon-button (click)="giveFeedback(false)" [color]="aiLiked === false ? 'warn' : ''">
+        <button *ngIf="message.rating !== 1" mat-icon-button (click)="giveFeedback(false)">
             👎
         </button>
     </div>
