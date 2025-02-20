@@ -5,5 +5,6 @@ export interface ChatMessage {
     date: Date; 
     isFromAi: boolean;
     rating: number;
+    isBeingGenerated: boolean;
   }
   

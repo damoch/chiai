@@ -1,4 +1,6 @@
 ﻿using chiai.Server.Sevices.Abstracts;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace chiai.Server.Sevices.Implementations
 {
@@ -9,17 +11,24 @@ namespace chiai.Server.Sevices.Implementations
         {
             _chatService = chatService;
         }
-        public async IAsyncEnumerable<char> GenerateResponseStreamAsync(string userMessage, int chatId)
+        public async IAsyncEnumerable<char> GenerateResponseStreamAsync(string userMessage, int chatId, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             string aiResponse = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+            var sb = new StringBuilder();
 
             foreach (char c in aiResponse)
             {
                 yield return c;
+                sb.Append(c);
                 await Task.Delay(50);
+                if(cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
             }
 
-            await _chatService.SaveMessageAsync(chatId, new ChatMessageDto { Content = aiResponse, IsFromAi=true, Author="ChiAI" });
+            await _chatService.SaveMessageAsync(chatId, new ChatMessageDto { Content = sb.ToString(), IsFromAi=true, Author="ChiAI" });
         }
     }
 }

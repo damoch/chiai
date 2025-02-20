@@ -25,5 +25,10 @@ export class MessageComponent {
     this.chatService.rateMessageAsHelpful(this.chatId, this.message.id, ratingValue).subscribe(() => {
       this.message.rating = ratingValue;//a bit naive... but its 2 AM...
     })
+
+  }
+
+  stopGeneration(){
+    this.chatService.stopMessageGeneration();
   }
 }

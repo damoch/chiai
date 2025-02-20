@@ -8,5 +8,8 @@
         <button *ngIf="message.rating !== 1" mat-icon-button (click)="giveFeedback(false)">
             👎
         </button>
+        <button *ngIf="message.isBeingGenerated" mat-icon-button (click)="stopGeneration()">
+            🛑
+        </button>
     </div>
 </mat-card>

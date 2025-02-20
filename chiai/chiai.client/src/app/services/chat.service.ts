@@ -11,10 +11,12 @@ export class ChatService {
   private apiUrl = '/chat';
   private currentUser:User;
   private chatSubject = new Subject<ChatMessage>();
-
+  private abortController:AbortController;
   constructor(
-    private http:HttpClient
+    private http:HttpClient,
+   
    ) {    
+    this.abortController = new AbortController();
     this.currentUser = {userId: 1, userName: "PromptNG"}
   }
 
@@ -37,7 +39,8 @@ export class ChatService {
       author: this.currentUser.userName,
       date: new Date(),
       isFromAi: false,
-      rating: 0
+      rating: 0,
+      isBeingGenerated: false
     };
     this.chatSubject.next(msg); 
   
@@ -53,12 +56,19 @@ export class ChatService {
     return parsedArray.join('');
 
   }
+
+  stopMessageGeneration(){
+    this.abortController.abort();
+  }
   
   private async receiveChunkedResponse(chatId: number, message: ChatMessage) {
+    this.abortController = new AbortController();
+    const signal = this.abortController.signal;
     const response = await fetch(`${this.apiUrl}/send/${chatId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(message)
+      body: JSON.stringify(message),
+      signal
     });
   
     if (!response.body) {
@@ -72,7 +82,15 @@ export class ChatService {
     while (true) {
       const { value, done } = await reader.read();
       if (done){
-
+        this.chatSubject.next({
+          id: 0,
+          content: this.parseIncompleteJson(currentText),
+          author: "ChiAI",
+          date: new Date(),
+          isFromAi: true,
+          rating: 0,
+          isBeingGenerated: false
+        });
         break; 
       }
       currentText += decoder.decode(value, { stream: true });
@@ -83,7 +101,8 @@ export class ChatService {
         author: "ChiAI",
         date: new Date(),
         isFromAi: true,
-        rating: 0
+        rating: 0,
+        isBeingGenerated: true
       });
     }
   }
