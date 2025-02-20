@@ -1,4 +1,6 @@
-﻿using chiai.Server.Sevices.Abstracts;
+﻿using chiai.Server.Messages.Commands;
+using chiai.Server.Sevices.Abstracts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chiai.Server.Controllers
@@ -6,19 +8,19 @@ namespace chiai.Server.Controllers
     [Route("history")]
     public class HistoryController : Controller
     {
-        private readonly IHistoryService _historyService;
+        private readonly IMediator _mediator;
 
-        public HistoryController(IHistoryService historyService)
+        public HistoryController(IMediator mediator)
         {
-            _historyService = historyService;
+            _mediator = mediator;
         }
 
         [HttpGet("{userId}")]
-        public IActionResult GetHistory(int userId)
+        public async Task<IActionResult> GetHistory(int userId)
         {
             try
             {
-                var history = _historyService.GetHistory(userId);
+                var history = await _mediator.Send(new GetUserChatHistoryQuery(userId));
                 return Ok(history);
             }
             catch (Exception ex)
@@ -28,11 +30,11 @@ namespace chiai.Server.Controllers
         }
 
         [HttpGet("chats/{chatId}/messages")]
-        public IActionResult GetChatMessages( int chatId)
+        public async Task<IActionResult> GetChatMessages(int chatId)
         {
             try
             {
-                var chatDto = _historyService.GetChatMessages(chatId);
+                var chatDto = await _mediator.Send(new GetChatMessagesCommand(chatId));
                 return Ok(chatDto);
             }
             catch (Exception ex)

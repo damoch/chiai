@@ -40,7 +40,7 @@ namespace chiai.Server.Controllers
             try
             {
                 await _mediator.Send(new SaveChatMessageCommand(chatId, message));
-                var response =  _aiChatService.GenerateResponseStreamAsync(message.Content, chatId);
+                var response = _aiChatService.GenerateResponseStreamAsync(message.Content, chatId);
                 return Ok(response);
             }
             catch (Exception ex)
