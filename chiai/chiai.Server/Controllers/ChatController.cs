@@ -10,11 +10,13 @@ namespace chiai.Server.Controllers
     public class ChatController : Controller
     {
         private readonly IChatService _chatService;
+        private readonly IAiChatService _aiChatService;
         private readonly IMediator _mediator;
 
-        public ChatController(IChatService chatService, IMediator mediator)
+        public ChatController(IChatService chatService, IMediator mediator, IAiChatService aiChatService)
         {
             _chatService = chatService;
+            _aiChatService = aiChatService;
             _mediator = mediator;
         }
 
@@ -37,7 +39,8 @@ namespace chiai.Server.Controllers
         {
             try
             {
-                var response = await _mediator.Send(new SendMessageStreamCommand(chatId, message));
+                await _mediator.Send(new SaveChatMessageCommand(chatId, message));
+                var response =  _aiChatService.GenerateResponseStreamAsync(message.Content, chatId);
                 return Ok(response);
             }
             catch (Exception ex)

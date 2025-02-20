@@ -1,4 +1,6 @@
-﻿using chiai.Server.Sevices.Abstracts;
+﻿using chiai.Server.Messages.Commands;
+using chiai.Server.Sevices.Abstracts;
+using MediatR;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -6,10 +8,10 @@ namespace chiai.Server.Sevices.Implementations
 {
     public class AiChatService : IAiChatService
     {
-        private readonly IChatService _chatService;
-        public AiChatService(IChatService chatService)
+        private readonly IMediator _mediator;
+        public AiChatService(IMediator mediator)
         {
-            _chatService = chatService;
+            _mediator = mediator;
         }
         public async IAsyncEnumerable<char> GenerateResponseStreamAsync(string userMessage, int chatId, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -27,8 +29,7 @@ namespace chiai.Server.Sevices.Implementations
                     break;
                 }
             }
-
-            await _chatService.SaveMessageAsync(chatId, new ChatMessageDto { Content = sb.ToString(), IsFromAi=true, Author="ChiAI" });
+            await _mediator.Send(new SaveChatMessageCommand(chatId, new ChatMessageDto { Content = sb.ToString(), IsFromAi = true, Author = "ChiAI" }));
         }
     }
 }
