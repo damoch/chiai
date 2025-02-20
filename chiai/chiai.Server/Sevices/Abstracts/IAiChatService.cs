@@ -1,6 +1,4 @@
 ﻿
-using System.Runtime.CompilerServices;
-
 namespace chiai.Server.Sevices.Abstracts
 {
     public interface IAiChatService

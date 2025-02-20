@@ -1,5 +1,4 @@
-﻿using chiai.Server.Data.Dto;
-using chiai.Server.Messages.Commands;
+﻿using chiai.Server.Messages.Commands;
 using chiai.Server.Sevices.Abstracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +8,11 @@ namespace chiai.Server.Controllers
     [Route("chat")]
     public class ChatController : Controller
     {
-        private readonly IChatService _chatService;
         private readonly IAiChatService _aiChatService;
         private readonly IMediator _mediator;
 
-        public ChatController(IChatService chatService, IMediator mediator, IAiChatService aiChatService)
+        public ChatController(IMediator mediator, IAiChatService aiChatService)
         {
-            _chatService = chatService;
             _aiChatService = aiChatService;
             _mediator = mediator;
         }
@@ -25,7 +22,7 @@ namespace chiai.Server.Controllers
         {
             try
             {
-                var chatDto = await _chatService.StartNewChat(userId);
+                var chatDto = await _mediator.Send(new StartNewChatCommand(userId));
                 return Ok(chatDto);
             }
             catch (Exception ex)
@@ -54,7 +51,7 @@ namespace chiai.Server.Controllers
         {
             try
             {
-                await _chatService.RateMessageAsync(chatId, messageId, rating);
+                await _mediator.Send(new RateChatMessageCommand(chatId, messageId, rating));
                 return Ok();
             }
             catch (Exception ex)
