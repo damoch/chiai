@@ -17,7 +17,7 @@ namespace chiai.Server.Messages.Commands
         public async Task<IAsyncEnumerable<char>> Handle(SendMessageStreamCommand request, CancellationToken cancellationToken)
         {
             await _chatService.SaveMessageAsync(request.chatId, request.Message);
-            return _aiChatService.GenerateResponseStreamAsync(request.Message.Content);
+            return _aiChatService.GenerateResponseStreamAsync(request.Message.Content, request.chatId);
         }
     }
 }

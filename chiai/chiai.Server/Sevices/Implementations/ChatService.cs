@@ -29,7 +29,8 @@ namespace chiai.Server.Sevices.Implementations
                 ChatId = chatId,
                 Content = message.Content,
                 Author = message.Author,
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.Now,
+                IsFromAi = message.IsFromAi
             };
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
