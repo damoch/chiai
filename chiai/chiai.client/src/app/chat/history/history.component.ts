@@ -23,9 +23,7 @@ export class HistoryComponent {
     this.historyService.getHistory().subscribe((result: Chat[]) => {
       
       this.history = result.sort((a, b) => 
-        {
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        }
+           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
     });
   }

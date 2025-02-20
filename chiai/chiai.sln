@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chiai.Server", "chiai.Server\chiai.Server.csproj", "{3038C0BE-1E42-4BA4-9C50-D39AAE46B810}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "chiai.client", "chiai.client\chiai.client.esproj", "{E45DB337-68D4-49E6-ABED-247868EA50FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chiai.Server.Tests", "chiai.Server.Tests\chiai.Server.Tests.csproj", "{1940D5C9-578D-4B2A-A6DC-9A4336DFCDEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{E45DB337-68D4-49E6-ABED-247868EA50FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E45DB337-68D4-49E6-ABED-247868EA50FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E45DB337-68D4-49E6-ABED-247868EA50FD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1940D5C9-578D-4B2A-A6DC-9A4336DFCDEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1940D5C9-578D-4B2A-A6DC-9A4336DFCDEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1940D5C9-578D-4B2A-A6DC-9A4336DFCDEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1940D5C9-578D-4B2A-A6DC-9A4336DFCDEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
