@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { HistoryService } from '../../services/history.service';
-import { Chat } from "../../shared/historyItem"
+import { Chat } from "../../shared/chat"
 
 @Component({
   selector: 'app-history',
@@ -21,7 +21,12 @@ export class HistoryComponent {
   }
   loadHistory() {
     this.historyService.getHistory().subscribe((result: Chat[]) => {
-      this.history = result;
+      
+      this.history = result.sort((a, b) => 
+        {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        }
+    );
     });
   }
 

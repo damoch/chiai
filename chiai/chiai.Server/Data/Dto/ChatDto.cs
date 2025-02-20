@@ -7,10 +7,12 @@
             return new ChatDto
             {
                 Id = chat.Id,
-                Title = chat.Title
+                Title = chat.Title,
+                CreatedAt = chat.CreatedAt
             };
         }
         public int Id { get; set; }
         public string Title { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

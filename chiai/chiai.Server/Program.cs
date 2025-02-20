@@ -13,7 +13,6 @@ namespace chiai.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddScoped<IChatService, ChatService>();
             builder.Services.AddScoped<IAiChatService, AiChatService>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly));
             builder.Services.AddControllers();

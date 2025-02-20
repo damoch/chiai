@@ -21,32 +21,49 @@ export class ChatComponent implements OnInit {
 
   currentChatId:number = -1;
   ngOnInit(): void {
-    this.startNewChat();
   }
 
   startNewChat() {
     this.chatService.startNewChat().subscribe((result: any) => {
-      this.currentChatId = result.id;
-      this.chatService.connect(this.currentChatId).subscribe((message) => {
-        if (message.author === 'ChiAI') {
-          const lastMessage = this.chatMessages[this.chatMessages.length - 1];
-          if (lastMessage && lastMessage.author === 'ChiAI') {
-            lastMessage.content = message.content;
-          } else {
-            this.chatMessages.push(message);
-          }
-        } else {
-          this.chatMessages.push(message);
-        }
-      });
-      this.chatMessages = [];
-      this.newChatLoaded.emit();
+      this.handleNewChatStarted(result);
     });
 
   }
 
+  private handleNewChatStarted(result: any) {
+    this.currentChatId = result.id;
+    this.chatService.connect(this.currentChatId).subscribe((message) => {
+      this.handleMessage(message);
+    });
+    this.chatMessages = [];
+    this.newChatLoaded.emit();
+  }
+
+  private handleMessage(message: ChatMessage) {
+    if (message.author === 'ChiAI') {
+      const lastMessage = this.chatMessages[this.chatMessages.length - 1];
+      if (lastMessage && lastMessage.author === 'ChiAI') {
+        lastMessage.content = message.content;
+      } else {
+        this.chatMessages.push(message);
+      }
+    } else {
+      this.chatMessages.push(message);
+    }
+  }
+
   sendMessage() {
     if (!this.userMessage.trim()) return;
+
+    if(this.currentChatId < 0){
+      this.chatService.startNewChat().subscribe((result: any) => {
+        this.handleNewChatStarted(result);
+        this.chatService.sendMessage(this.userMessage, this.currentChatId);
+        this.userMessage = "";
+      });
+      return;
+    }
+
     this.chatService.sendMessage(this.userMessage, this.currentChatId);
     this.userMessage = "";
   }

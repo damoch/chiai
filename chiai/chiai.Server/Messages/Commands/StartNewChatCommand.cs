@@ -34,7 +34,8 @@ namespace chiai.Server.Messages.Commands
             var chat = new Chat
             {
                 UserId = request.userId,
-                Title = $"Chat no. {nextChatNumber}"
+                Title = $"Chat no. {nextChatNumber}",
+                CreatedAt = DateTime.UtcNow
             };
 
             await using var transaction = await _dbContext.Database.BeginTransactionAsync();

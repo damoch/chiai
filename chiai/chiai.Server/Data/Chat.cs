@@ -12,6 +12,7 @@ namespace chiai.Server.Data
         public string Title { get; set; } = string.Empty;
         public int UserId { get; set; }
         public User User { get; set; } = null!;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public List<ChatMessage> Messages { get; set; } = new();
 
     }

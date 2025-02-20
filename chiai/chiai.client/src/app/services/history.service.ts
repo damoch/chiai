@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Chat } from '../shared/historyItem';
+import { Chat } from '../shared/chat';
 import { ChatMessage } from '../shared/chatMessage';
 import { User } from '../shared/user';
 import { HttpClient, HttpParams } from '@angular/common/http';
