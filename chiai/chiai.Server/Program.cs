@@ -1,5 +1,6 @@
 
 using chiai.Server.Data;
+using chiai.Server.Middleware;
 using chiai.Server.Sevices.Abstracts;
 using chiai.Server.Sevices.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace chiai.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            //builder.Services.AddSingleton<LanguageFilterMiddleware>();
             builder.Services.AddScoped<IAiChatService, AiChatService>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly));
             builder.Services.AddControllers();
@@ -39,6 +41,7 @@ namespace chiai.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseMiddleware<LanguageFilterMiddleware>();
 
 
             app.MapControllers();
